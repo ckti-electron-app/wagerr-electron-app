@@ -151,25 +151,10 @@ parts:
     plugin: nil
 
     override-build: |
-      #mkdir -p /snap/local/patches
-      #cp /root/snap/local/patches/X005-update.patch /snap/local/patches
       git apply ${SNAPCRAFT_PROJECT_DIR}/snap/local/patches/X005-update.patch
-      #if [ $SNAPCRAFT_ARCH_TRIPLET = "x86_64-linux-gnu" ]; then
-        #curl -sL https://deb.nodesource.com/setup_15.x | bash -
-        wget https://deb.nodesource.com/setup_15.x
-        bash ./setup_15.x
-        #apt-get -y update
-        apt-get -y install nodejs
-      #else
-        #apt-get -y install npm nodejs
-      #fi
-      #snap install node --edge --classic
-      #find . -type f -name snap -print
-      if [ $SNAPCRAFT_ARCH_TRIPLET = "i386-linux-gnu" ]; then
-        HOST="i686-pc-linux-gnu"
-      else
-        HOST="${SNAPCRAFT_ARCH_TRIPLET}"
-      fi
+      wget https://deb.nodesource.com/setup_15.x
+      bash ./setup_15.x
+      HOST="${SNAPCRAFT_ARCH_TRIPLET}"
       wget https://github.com/wagerr/wagerr/releases/download/v4.0.0/wagerr-4.0.0-${HOST}.tar.gz
       tar -xf wagerr-4.0.0-${HOST}.tar.gz
       mkdir bin
@@ -191,7 +176,6 @@ parts:
       ./$APPIMAGE --appimage-extract
       mv ./squashfs-root/* $SNAPCRAFT_PART_INSTALL/app
       find $SNAPCRAFT_PART_INSTALL/app/ -type d -exec chmod 755 {} \;
-      #chmod 4755 $SNAPCRAFT_PART_INSTALL/app/chrome-sandbox
       $SNAPCRAFT_PART_INSTALL/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $SNAPCRAFT_PART_INSTALL/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/gdk-pixbuf-2.0/2.10.0/loaders.cache
 
     stage-packages:
